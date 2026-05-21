@@ -62,6 +62,8 @@ enum class BeOnLogoVariant(@DrawableRes internal val drawableRes: Int) {
  * Escala vertical del logo. La proporción horizontal se calcula automáticamente.
  */
 enum class BeOnLogoSize(internal val height: Dp) {
+    /** 28dp — barra superior móvil (Figma `h-7`). */
+    Nav(28.dp),
     Small(20.dp),
     Medium(32.dp),
     Large(56.dp),

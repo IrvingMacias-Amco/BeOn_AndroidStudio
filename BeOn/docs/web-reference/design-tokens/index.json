@@ -1,0 +1,188 @@
+﻿{
+  "$schema": "https://tr.designtokens.org/format/",
+  "$description": "Complete Design Token System for Streaming Platform - Production Ready Token Architecture",
+  "$version": "1.0.0",
+  "$metadata": {
+    "platform": "OTT Streaming Platform",
+    "designSystem": "Cinematic Green Accent System",
+    "tokenFormat": "Design Tokens Community Group Format",
+    "compatibility": ["Tokens Studio", "Style Dictionary", "Figma Variables"]
+  },
+  "primitives": {
+    "$description": "Base primitive values - foundation of the design system",
+    "$file": "./primitives.json"
+  },
+  "semantic": {
+    "$description": "Semantic tokens that reference primitives - meaningful naming for application context",
+    "$file": "./semantic.json"
+  },
+  "typography": {
+    "$description": "Typography system - complete text styling architecture",
+    "$file": "./typography.json"
+  },
+  "motion": {
+    "$description": "Motion tokens - durations, easings, scales, and transitions",
+    "$file": "./motion.json"
+  },
+  "components": {
+    "$description": "Component-specific tokens - scoped values for UI components",
+    "$file": "./components.json"
+  },
+  "states": {
+    "$description": "Interactive state tokens",
+    "default": {
+      "opacity": {
+        "$type": "number",
+        "$value": 100
+      }
+    },
+    "hover": {
+      "opacity": {
+        "$type": "number",
+        "$value": 90
+      },
+      "scale": {
+        "$type": "number",
+        "$value": "{scale.hover}"
+      },
+      "transition": {
+        "$type": "string",
+        "$value": "{transition.default}"
+      }
+    },
+    "pressed": {
+      "opacity": {
+        "$type": "number",
+        "$value": 80
+      },
+      "scale": {
+        "$type": "number",
+        "$value": "{scale.pressed}"
+      }
+    },
+    "disabled": {
+      "opacity": {
+        "$type": "number",
+        "$value": 40
+      },
+      "textColor": {
+        "$type": "color",
+        "$value": "{color.text.disabled}"
+      }
+    },
+    "focus": {
+      "outlineColor": {
+        "$type": "color",
+        "$value": "{color.accent.primary}"
+      },
+      "outlineWidth": {
+        "$type": "number",
+        "$value": 2
+      },
+      "outlineOffset": {
+        "$type": "number",
+        "$value": 2
+      }
+    },
+    "loading": {
+      "opacity": {
+        "$type": "number",
+        "$value": 60
+      },
+      "animation": {
+        "$type": "string",
+        "$value": "pulse"
+      }
+    }
+  },
+  "responsive": {
+    "$description": "Responsive breakpoint system",
+    "breakpoints": {
+      "mobile": {
+        "$type": "number",
+        "$value": 375,
+        "$description": "Mobile devices"
+      },
+      "tablet": {
+        "$type": "number",
+        "$value": 768,
+        "$description": "Tablet devices"
+      },
+      "desktop": {
+        "$type": "number",
+        "$value": 1440,
+        "$description": "Desktop screens"
+      },
+      "ultrawide": {
+        "$type": "number",
+        "$value": 1920,
+        "$description": "Ultra-wide displays"
+      }
+    },
+    "safeArea": {
+      "mobile": {
+        "$type": "number",
+        "$value": "{safeArea.mobile}"
+      },
+      "tablet": {
+        "$type": "number",
+        "$value": "{safeArea.tablet}"
+      },
+      "desktop": {
+        "$type": "number",
+        "$value": "{safeArea.desktop}"
+      },
+      "ultrawide": {
+        "$type": "string",
+        "$value": "{safeArea.ultrawide}"
+      }
+    }
+  },
+  "layout": {
+    "$description": "Layout system tokens",
+    "grid": {
+      "columns": {
+        "mobile": {
+          "$type": "number",
+          "$value": 4
+        },
+        "tablet": {
+          "$type": "number",
+          "$value": 8
+        },
+        "desktop": {
+          "$type": "number",
+          "$value": 12
+        }
+      },
+      "gutter": {
+        "mobile": {
+          "$type": "number",
+          "$value": 16
+        },
+        "tablet": {
+          "$type": "number",
+          "$value": 24
+        },
+        "desktop": {
+          "$type": "number",
+          "$value": 32
+        }
+      }
+    },
+    "spacing": {
+      "section": {
+        "$type": "number",
+        "$value": "{spacing.12}"
+      },
+      "component": {
+        "$type": "number",
+        "$value": "{spacing.6}"
+      },
+      "element": {
+        "$type": "number",
+        "$value": "{spacing.4}"
+      }
+    }
+  }
+}

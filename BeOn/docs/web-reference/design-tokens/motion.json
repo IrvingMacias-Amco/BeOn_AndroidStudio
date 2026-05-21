@@ -1,0 +1,140 @@
+﻿{
+  "$schema": "https://tr.designtokens.org/format/",
+  "duration": {
+    "instant": {
+      "$type": "number",
+      "$value": 0,
+      "$description": "No animation"
+    },
+    "fast": {
+      "$type": "number",
+      "$value": 100,
+      "$description": "100ms - Quick micro-interactions"
+    },
+    "normal": {
+      "$type": "number",
+      "$value": 200,
+      "$description": "200ms - Standard transitions"
+    },
+    "medium": {
+      "$type": "number",
+      "$value": 300,
+      "$description": "300ms - Modal and overlay transitions"
+    },
+    "slow": {
+      "$type": "number",
+      "$value": 500,
+      "$description": "500ms - Page transitions"
+    },
+    "slower": {
+      "$type": "number",
+      "$value": 800,
+      "$description": "800ms - Skeleton shimmer, complex animations"
+    },
+    "slowest": {
+      "$type": "number",
+      "$value": 1000,
+      "$description": "1000ms - Hero transitions"
+    }
+  },
+  "easing": {
+    "linear": {
+      "$type": "string",
+      "$value": "linear"
+    },
+    "ease": {
+      "$type": "string",
+      "$value": "ease"
+    },
+    "easeIn": {
+      "$type": "string",
+      "$value": "ease-in"
+    },
+    "easeOut": {
+      "$type": "string",
+      "$value": "ease-out"
+    },
+    "easeInOut": {
+      "$type": "string",
+      "$value": "ease-in-out"
+    },
+    "smooth": {
+      "$type": "string",
+      "$value": "cubic-bezier(0.4, 0, 0.2, 1)"
+    },
+    "snappy": {
+      "$type": "string",
+      "$value": "cubic-bezier(0.4, 0, 0.6, 1)"
+    },
+    "bounce": {
+      "$type": "string",
+      "$value": "cubic-bezier(0.68, -0.55, 0.265, 1.55)"
+    }
+  },
+  "scale": {
+    "hover": {
+      "$type": "number",
+      "$value": 1.05,
+      "$description": "Standard hover scale for cards"
+    },
+    "hoverLarge": {
+      "$type": "number",
+      "$value": 1.1,
+      "$description": "Large hover scale for buttons"
+    },
+    "pressed": {
+      "$type": "number",
+      "$value": 0.95,
+      "$description": "Pressed/tap state scale"
+    },
+    "pressedStrong": {
+      "$type": "number",
+      "$value": 0.9,
+      "$description": "Strong pressed state"
+    }
+  },
+  "animation": {
+    "fadeIn": {
+      "$type": "string",
+      "$value": "fadeIn",
+      "$description": "Fade in animation name"
+    },
+    "fadeOut": {
+      "$type": "string",
+      "$value": "fadeOut",
+      "$description": "Fade out animation name"
+    },
+    "slideUp": {
+      "$type": "string",
+      "$value": "slideUp",
+      "$description": "Slide up animation name"
+    },
+    "shimmer": {
+      "$type": "string",
+      "$value": "shimmer",
+      "$description": "Skeleton shimmer animation"
+    }
+  },
+  "transition": {
+    "default": {
+      "$type": "string",
+      "$value": "all {duration.normal}ms {easing.smooth}",
+      "$description": "Default transition for most elements"
+    },
+    "fast": {
+      "$type": "string",
+      "$value": "all {duration.fast}ms {easing.easeInOut}",
+      "$description": "Fast transition for micro-interactions"
+    },
+    "opacity": {
+      "$type": "string",
+      "$value": "opacity {duration.normal}ms {easing.easeInOut}",
+      "$description": "Opacity-only transition"
+    },
+    "transform": {
+      "$type": "string",
+      "$value": "transform {duration.normal}ms {easing.smooth}",
+      "$description": "Transform-only transition"
+    }
+  }
+}

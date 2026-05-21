@@ -1,0 +1,189 @@
+﻿{
+  "$schema": "https://tr.designtokens.org/format/",
+  "color": {
+    "background": {
+      "primary": {
+        "$type": "color",
+        "$value": "{color.black}"
+      },
+      "surface": {
+        "$type": "color",
+        "$value": "{color.gray.950}"
+      },
+      "elevated": {
+        "$type": "color",
+        "$value": "{color.gray.850}"
+      },
+      "overlay": {
+        "$type": "color",
+        "$value": "rgba(0, 0, 0, 0.8)"
+      }
+    },
+    "text": {
+      "primary": {
+        "$type": "color",
+        "$value": "{color.white}"
+      },
+      "secondary": {
+        "$type": "color",
+        "$value": "{color.gray.400}"
+      },
+      "disabled": {
+        "$type": "color",
+        "$value": "{color.gray.600}"
+      },
+      "success": {
+        "$type": "color",
+        "$value": "{color.green.500}"
+      },
+      "error": {
+        "$type": "color",
+        "$value": "{color.red.error}"
+      },
+      "warning": {
+        "$type": "color",
+        "$value": "{color.yellow.500}"
+      }
+    },
+    "accent": {
+      "primary": {
+        "$type": "color",
+        "$value": "{color.green.500}"
+      },
+      "hover": {
+        "$type": "color",
+        "$value": "{color.green.hover}"
+      },
+      "bright": {
+        "$type": "color",
+        "$value": "{color.green.accent}"
+      }
+    },
+    "border": {
+      "default": {
+        "$type": "color",
+        "$value": "{color.gray.900}"
+      },
+      "subtle": {
+        "$type": "color",
+        "$value": "rgba(255, 255, 255, 0.05)"
+      },
+      "medium": {
+        "$type": "color",
+        "$value": "rgba(255, 255, 255, 0.1)"
+      },
+      "strong": {
+        "$type": "color",
+        "$value": "rgba(255, 255, 255, 0.2)"
+      }
+    },
+    "status": {
+      "live": {
+        "$type": "color",
+        "$value": "{color.red.500}"
+      },
+      "new": {
+        "$type": "color",
+        "$value": "{color.green.500}"
+      }
+    }
+  },
+  "spacing": {
+    "xxs": {
+      "$type": "number",
+      "$value": "{spacing.1}"
+    },
+    "xs": {
+      "$type": "number",
+      "$value": "{spacing.2}"
+    },
+    "sm": {
+      "$type": "number",
+      "$value": "{spacing.4}"
+    },
+    "md": {
+      "$type": "number",
+      "$value": "{spacing.6}"
+    },
+    "lg": {
+      "$type": "number",
+      "$value": "{spacing.10}"
+    },
+    "xl": {
+      "$type": "number",
+      "$value": "{spacing.16}"
+    },
+    "xxl": {
+      "$type": "number",
+      "$value": "{spacing.24}"
+    }
+  },
+  "safeArea": {
+    "mobile": {
+      "$type": "number",
+      "$value": 16
+    },
+    "tablet": {
+      "$type": "number",
+      "$value": 32
+    },
+    "desktop": {
+      "$type": "number",
+      "$value": 64
+    },
+    "ultrawide": {
+      "$type": "string",
+      "$value": "auto"
+    }
+  },
+  "gradient": {
+    "button": {
+      "primary": {
+        "$type": "string",
+        "$value": "linear-gradient(135deg, #22C55E 0%, #05DF72 100%)"
+      }
+    },
+    "hero": {
+      "overlay": {
+        "$type": "string",
+        "$value": "linear-gradient(89.66deg, rgba(0, 0, 0, 0.9) 29.07%, rgba(0, 0, 0, 0.6) 98.69%)"
+      }
+    },
+    "player": {
+      "top": {
+        "$type": "string",
+        "$value": "linear-gradient(to bottom, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0) 100%)"
+      },
+      "bottom": {
+        "$type": "string",
+        "$value": "linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0) 100%)"
+      }
+    },
+    "card": {
+      "hover": {
+        "$type": "string",
+        "$value": "linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.6) 50%, transparent 100%)"
+      }
+    }
+  },
+  "shadow": {
+    "card": {
+      "$type": "string",
+      "$value": "0px 10px 15px -3px rgba(0,0,0,0.1), 0px 4px 6px -4px rgba(0,0,0,0.1)"
+    },
+    "glow": {
+      "medium": {
+        "$type": "string",
+        "$value": "0 0 24px rgba(5, 223, 114, 0.45)"
+      },
+      "strong": {
+        "$type": "string",
+        "$value": "0 0 35px rgba(5, 223, 114, 0.6)"
+      },
+      "live": {
+        "$type": "string",
+        "$value": "0 0 15px rgba(239, 68, 68, 0.6)"
+      }
+    }
+  }
+}

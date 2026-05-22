@@ -14,5 +14,10 @@
 .cxx
 local.properties
 
+# Secrets — never commit
+.env
+.env.*
+!.env.example
+
 # Figma Make extraction workspace (large binaries, not for version control)
 .figma_make_extracted/

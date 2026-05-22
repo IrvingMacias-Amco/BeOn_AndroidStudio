@@ -3,6 +3,7 @@ package com.example.beon.feature.home.components
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -42,6 +43,7 @@ import com.example.beon.feature.home.heroSlides
 @Composable
 fun HomeHeroSection(
     slides: List<HeroSlide> = heroSlides,
+    onSlideClick: (String) -> Unit = {},
     modifier: Modifier = Modifier,
 ) {
     val pagerState = rememberPagerState(pageCount = { slides.size })
@@ -62,6 +64,7 @@ fun HomeHeroSection(
                     slide = slides[page],
                     pageCount = slides.size,
                     currentPage = pagerState.currentPage,
+                    onClick = { onSlideClick(slides[page].id) },
                 )
             }
         }
@@ -73,11 +76,16 @@ private fun HeroSlideContent(
     slide: HeroSlide,
     pageCount: Int,
     currentPage: Int,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val colors = BeOnTheme.colors
 
-    Box(modifier = modifier.fillMaxSize()) {
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .clickable(onClick = onClick),
+    ) {
         AsyncImage(
             model = slide.imageUrl,
             contentDescription = slide.title,

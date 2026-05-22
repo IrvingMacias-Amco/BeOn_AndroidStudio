@@ -22,6 +22,8 @@ import androidx.compose.ui.graphics.Color
 data class BeOnGradients(
     /** Primary CTA gradient — green-500 → green-accent at 135°. */
     val buttonPrimary: Brush,
+    /** Play CTA on content detail — teal → lime at 90°. */
+    val buttonPlay: Brush,
     /** Hero section overlay — left-to-right black fade. */
     val heroOverlay: Brush,
     /** Player top chrome fade. */
@@ -39,6 +41,12 @@ data class BeOnGradients(
 internal fun beOnDefaultGradients(colors: BeOnColors): BeOnGradients = BeOnGradients(
     buttonPrimary = Brush.linearGradient(
         colors = listOf(colors.accent.primary, colors.accent.bright),
+    ),
+    buttonPlay = Brush.horizontalGradient(
+        colors = listOf(
+            Color(0xFF5EEAD4),
+            Color(0xFF84CC16),
+        ),
     ),
     heroOverlay = Brush.horizontalGradient(
         colorStops = arrayOf(

@@ -5,7 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.example.beon.designsystem.theme.BeOnTheme
-import com.example.beon.feature.home.HomeScreen
+import com.example.beon.navigation.BeOnNavHost
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -13,7 +13,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             BeOnTheme {
-                HomeScreen()
+                BeOnNavHost()
             }
         }
     }

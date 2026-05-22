@@ -1,0 +1,14 @@
+# Copy this file to local.properties and fill in your values.
+# local.properties is gitignored — never commit real tokens.
+
+sdk.dir=C\:\\Users\\YOUR_USER\\AppData\\Local\\Android\\Sdk
+
+# Sanity CMS (required for live catalog)
+SANITY_PROJECT_ID=
+SANITY_DATASET=production
+SANITY_API_TOKEN=
+
+# Mux — backend only for this phase. Do NOT add to the Android app.
+# Playback uses muxPlaybackId from Sanity.
+# MUX_TOKEN_ID=
+# MUX_TOKEN_SECRET=

@@ -1,12 +1,14 @@
 package com.example.beon.feature.home.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
@@ -24,10 +26,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.example.beon.designsystem.theme.BeOnTheme
 import com.example.beon.feature.home.ContentItem
 
@@ -63,6 +67,7 @@ fun HomeSectionHeader(
 fun HomeLandscapeCarousel(
     title: String,
     items: List<ContentItem>,
+    onItemClick: (String) -> Unit = {},
     cardWidth: androidx.compose.ui.unit.Dp = 200.dp,
     modifier: Modifier = Modifier,
 ) {
@@ -78,8 +83,12 @@ fun HomeLandscapeCarousel(
             ),
             horizontalArrangement = Arrangement.spacedBy(12.dp),
         ) {
-            itemsIndexed(items) { _, _ ->
-                PlaceholderLandscapeCard(width = cardWidth)
+            itemsIndexed(items) { _, item ->
+                ContentLandscapeCard(
+                    imageUrl = item.imageUrl,
+                    width = cardWidth,
+                    onClick = { onItemClick(item.id) },
+                )
             }
         }
     }
@@ -89,6 +98,7 @@ fun HomeLandscapeCarousel(
 fun HomeFeaturedGridSection(
     title: String,
     items: List<ContentItem>,
+    onItemClick: (String) -> Unit = {},
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -98,9 +108,11 @@ fun HomeFeaturedGridSection(
     ) {
         HomeSectionHeader(title = title)
         Spacer(modifier = Modifier.height(12.dp))
-        PlaceholderLandscapeCard(
+        ContentLandscapeCard(
+            imageUrl = items.firstOrNull()?.imageUrl,
             width = androidx.compose.ui.unit.Dp.Unspecified,
             modifier = Modifier.fillMaxWidth(),
+            onClick = { items.firstOrNull()?.id?.let(onItemClick) },
         )
         Spacer(modifier = Modifier.height(12.dp))
         Row(
@@ -108,9 +120,11 @@ fun HomeFeaturedGridSection(
             horizontalArrangement = Arrangement.spacedBy(12.dp),
         ) {
             val portraitItems = items.take(3)
-            portraitItems.forEach { _ ->
-                PlaceholderPortraitCard(
+            portraitItems.forEach { item ->
+                ContentPortraitCard(
+                    imageUrl = item.imageUrl,
                     modifier = Modifier.weight(1f),
+                    onClick = { onItemClick(item.id) },
                 )
             }
         }
@@ -121,6 +135,7 @@ fun HomeFeaturedGridSection(
 fun HomeTop10Carousel(
     title: String,
     items: List<ContentItem>,
+    onItemClick: (String) -> Unit = {},
     modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
@@ -135,17 +150,23 @@ fun HomeTop10Carousel(
             ),
             horizontalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            itemsIndexed(items) { index, _ ->
-                Top10Card(rank = index + 1)
+            itemsIndexed(items) { index, item ->
+                Top10Card(
+                    rank = index + 1,
+                    imageUrl = item.imageUrl,
+                    onClick = { onItemClick(item.id) },
+                )
             }
         }
     }
 }
 
 @Composable
-private fun PlaceholderLandscapeCard(
+private fun ContentLandscapeCard(
+    imageUrl: String?,
     width: androidx.compose.ui.unit.Dp,
     modifier: Modifier = Modifier,
+    onClick: () -> Unit = {},
 ) {
     Box(
         modifier = modifier
@@ -158,25 +179,49 @@ private fun PlaceholderLandscapeCard(
             )
             .aspectRatio(16f / 9f)
             .clip(BeOnTheme.shapes.md)
-            .background(PlaceholderCardColor),
-    )
+            .background(PlaceholderCardColor)
+            .clickable(onClick = onClick),
+    ) {
+        if (!imageUrl.isNullOrBlank()) {
+            AsyncImage(
+                model = imageUrl,
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.fillMaxSize(),
+            )
+        }
+    }
 }
 
 @Composable
-private fun PlaceholderPortraitCard(
+private fun ContentPortraitCard(
+    imageUrl: String?,
     modifier: Modifier = Modifier,
+    onClick: () -> Unit = {},
 ) {
     Box(
         modifier = modifier
             .aspectRatio(2f / 3f)
             .clip(BeOnTheme.shapes.md)
-            .background(PlaceholderCardColor),
-    )
+            .background(PlaceholderCardColor)
+            .clickable(onClick = onClick),
+    ) {
+        if (!imageUrl.isNullOrBlank()) {
+            AsyncImage(
+                model = imageUrl,
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.fillMaxSize(),
+            )
+        }
+    }
 }
 
 @Composable
 private fun Top10Card(
     rank: Int,
+    imageUrl: String? = null,
+    onClick: () -> Unit = {},
     modifier: Modifier = Modifier,
 ) {
     val rankFontSize = if (rank == 10) 96.sp else 112.sp
@@ -205,7 +250,17 @@ private fun Top10Card(
                 .width(cardWidth)
                 .height(160.dp)
                 .clip(BeOnTheme.shapes.lg)
-                .background(PlaceholderCardColor),
-        )
+                .background(PlaceholderCardColor)
+                .clickable(onClick = onClick),
+        ) {
+            if (!imageUrl.isNullOrBlank()) {
+                AsyncImage(
+                    model = imageUrl,
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.fillMaxSize(),
+                )
+            }
+        }
     }
 }

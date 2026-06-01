@@ -34,6 +34,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.beon.designsystem.theme.BeOnTheme
 import com.example.beon.feature.home.ContentItem
+import com.example.beon.feature.home.LiveChannel
 
 private val PlaceholderCardColor = Color(0xFFF2F2F2)
 
@@ -214,6 +215,111 @@ private fun ContentPortraitCard(
                 modifier = Modifier.fillMaxSize(),
             )
         }
+    }
+}
+
+/**
+ * Espejo del `LiveChannelsRail.tsx` del frontend web.
+ * Tarjetas portrait (2/3) con badge EN VIVO, inicial del canal y el programa
+ * actual debajo de la tarjeta.
+ */
+@Composable
+fun HomeLiveChannelsRow(
+    title: String,
+    channels: List<LiveChannel>,
+    modifier: Modifier = Modifier,
+) {
+    if (channels.isEmpty()) return
+    Column(modifier = modifier.fillMaxWidth()) {
+        HomeSectionHeader(
+            title = title,
+            modifier = Modifier.padding(horizontal = BeOnTheme.safeArea.mobile),
+        )
+        Spacer(modifier = Modifier.height(12.dp))
+        LazyRow(
+            contentPadding = androidx.compose.foundation.layout.PaddingValues(
+                horizontal = BeOnTheme.safeArea.mobile,
+            ),
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+        ) {
+            itemsIndexed(channels) { _, channel ->
+                LiveChannelCard(channel = channel)
+            }
+        }
+    }
+}
+
+@Composable
+private fun LiveChannelCard(
+    channel: LiveChannel,
+    modifier: Modifier = Modifier,
+) {
+    Column(modifier = modifier.width(160.dp)) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .aspectRatio(2f / 3f)
+                .clip(BeOnTheme.shapes.md)
+                .background(Color(0xFF1F1F23)),
+        ) {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center,
+            ) {
+                Text(
+                    text = channel.name.firstOrNull()?.uppercase().orEmpty(),
+                    style = TextStyle(
+                        fontSize = 36.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White.copy(alpha = 0.6f),
+                    ),
+                )
+            }
+            Row(
+                modifier = Modifier
+                    .align(Alignment.TopStart)
+                    .padding(8.dp)
+                    .background(Color(0xFFFF4D4D), BeOnTheme.shapes.sm)
+                    .padding(horizontal = 8.dp, vertical = 4.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(6.dp),
+            ) {
+                Box(
+                    modifier = Modifier
+                        .width(8.dp)
+                        .height(8.dp)
+                        .clip(androidx.compose.foundation.shape.CircleShape)
+                        .background(Color.White),
+                )
+                Text(
+                    text = "EN VIVO",
+                    fontSize = 10.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White,
+                    letterSpacing = 0.5.sp,
+                )
+            }
+            Box(
+                modifier = Modifier
+                    .align(Alignment.BottomStart)
+                    .fillMaxWidth()
+                    .background(Color.Black.copy(alpha = 0.7f))
+                    .padding(horizontal = 10.dp, vertical = 8.dp),
+            ) {
+                Text(
+                    text = channel.name,
+                    fontSize = 13.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    color = Color.White,
+                )
+            }
+        }
+        Spacer(modifier = Modifier.height(6.dp))
+        Text(
+            text = channel.currentProgram,
+            fontSize = 11.sp,
+            color = BeOnTheme.colors.text.secondary,
+        )
     }
 }
 

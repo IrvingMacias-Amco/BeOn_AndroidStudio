@@ -58,6 +58,7 @@ import com.example.beon.R
 import com.example.beon.designsystem.components.BeOnLogo
 import com.example.beon.designsystem.components.BeOnLogoSize
 import com.example.beon.designsystem.theme.BeOnTheme
+import com.example.beon.feature.home.ContentItem
 
 private val PlaceholderCardColor = Color(0xFFF2F2F2)
 private val ImdbYellow = Color(0xFFFDC700)
@@ -67,9 +68,11 @@ private val PlayButtonGlow = Color(0x6622C55E)
 @Composable
 fun ContentDetailScreen(
     content: ContentDetail?,
+    relatedContent: List<ContentItem> = emptyList(),
     isLoading: Boolean,
     errorMessage: String?,
     onBack: () -> Unit,
+    onPlayClick: () -> Unit = {},
     onContentClick: (String) -> Unit = {},
     modifier: Modifier = Modifier,
 ) {
@@ -93,8 +96,10 @@ fun ContentDetailScreen(
             content != null -> {
                 ContentDetailBody(
                     content = content,
+                    relatedContent = relatedContent,
                     selectedTab = selectedTab,
                     onTabSelected = { selectedTab = it },
+                    onPlayClick = onPlayClick,
                     onContentClick = onContentClick,
                 )
             }
@@ -114,8 +119,10 @@ fun ContentDetailScreen(
 @Composable
 private fun ContentDetailBody(
     content: ContentDetail,
+    relatedContent: List<ContentItem>,
     selectedTab: ContentDetailTab,
     onTabSelected: (ContentDetailTab) -> Unit,
+    onPlayClick: () -> Unit,
     onContentClick: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -192,7 +199,7 @@ private fun ContentDetailBody(
                 Spacer(modifier = Modifier.height(BeOnTheme.spacing.lg))
 
                 ContentPlayButton(
-                    onClick = {},
+                    onClick = onPlayClick,
                     modifier = Modifier.fillMaxWidth(),
                 )
 
@@ -214,7 +221,10 @@ private fun ContentDetailBody(
         item {
             when (selectedTab) {
                 ContentDetailTab.Related -> {
-                    RelatedContentRow(onContentClick = onContentClick)
+                    RelatedContentRow(
+                        items = relatedContent,
+                        onContentClick = onContentClick,
+                    )
                 }
                 ContentDetailTab.Trailer -> {
                     ContentTabPlaceholder(text = "Tráiler disponible próximamente.")
@@ -559,10 +569,17 @@ private val ContentDetailTab.label: String
 
 @Composable
 private fun RelatedContentRow(
+    items: List<ContentItem>,
     onContentClick: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val relatedItems = remember { List(4) { index -> "related-$index" } }
+    if (items.isEmpty()) {
+        ContentTabPlaceholder(
+            text = "No hay contenido relacionado disponible.",
+            modifier = modifier.padding(top = BeOnTheme.spacing.md),
+        )
+        return
+    }
 
     LazyRow(
         modifier = modifier
@@ -573,15 +590,53 @@ private fun RelatedContentRow(
         ),
         horizontalArrangement = Arrangement.spacedBy(12.dp),
     ) {
-        items(relatedItems) { itemId ->
+        items(items, key = { it.id }) { item ->
             Box(
                 modifier = Modifier
                     .width(120.dp)
                     .aspectRatio(2f / 3f)
                     .clip(BeOnTheme.shapes.md)
-                    .background(PlaceholderCardColor)
-                    .clickable { onContentClick(itemId) },
-            )
+                    .clickable { onContentClick(item.id) },
+            ) {
+                if (!item.imageUrl.isNullOrBlank()) {
+                    AsyncImage(
+                        model = item.imageUrl,
+                        contentDescription = item.title,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier.fillMaxSize(),
+                    )
+                } else {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(PlaceholderCardColor),
+                    )
+                }
+                if (item.title.isNotBlank()) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(
+                                Brush.verticalGradient(
+                                    colorStops = arrayOf(
+                                        0.55f to Color.Transparent,
+                                        1.0f to Color(0xE6000000),
+                                    ),
+                                ),
+                            ),
+                    )
+                    Text(
+                        text = item.title,
+                        color = BeOnTheme.colors.text.primary,
+                        fontSize = 11.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        maxLines = 2,
+                        modifier = Modifier
+                            .align(Alignment.BottomStart)
+                            .padding(8.dp),
+                    )
+                }
+            }
         }
     }
 }

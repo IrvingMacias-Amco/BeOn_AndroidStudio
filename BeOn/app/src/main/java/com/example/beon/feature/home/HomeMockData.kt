@@ -21,7 +21,19 @@ data class ContentItem(
     val id: String,
     val title: String = "",
     val imageUrl: String? = null,
+    val year: String? = null,
     val progress: Int? = null,
+)
+
+/**
+ * Canal en vivo (mock — futuro: vendrá del BFF o de una fuente EPG).
+ * Mirror de `LiveChannel` del frontend web (`src/app/page.tsx`).
+ */
+data class LiveChannel(
+    val id: String,
+    val name: String,
+    val currentProgram: String,
+    val category: String,
 )
 
 internal val homeNavItems = listOf(
@@ -78,16 +90,64 @@ internal val heroSlides = listOf(
     ),
 )
 
-internal val continueWatchingItems = List(4) { ContentItem(id = "cw-$it") }
+// Pool de placeholders derivado de los hero slides — se usa cuando el BFF
+// no responde. En cuanto llegan datos reales, estas listas se reemplazan en
+// `HomeCatalog` por las que arma `BffMovieRepository.getHomeCatalog`.
+private fun mockContent(prefix: String, count: Int, progress: ((Int) -> Int?)? = null): List<ContentItem> =
+    List(count) { index ->
+        val slide = heroSlides[index % heroSlides.size]
+        ContentItem(
+            id = "$prefix-$index",
+            title = slide.title,
+            imageUrl = slide.imageUrl,
+            year = slide.year,
+            progress = progress?.invoke(index),
+        )
+    }
 
-internal val landscapeRowItems = List(4) { ContentItem(id = "land-$it") }
+// Mismos números de progreso que el frontend (page.tsx: [35, 72, 15, 88])
+private val continueWatchingProgress = intArrayOf(35, 72, 15, 88)
 
-internal val portraitRowItems = List(4) { ContentItem(id = "port-$it") }
+internal val continueWatchingItems = mockContent("cw", 4) { continueWatchingProgress.getOrElse(it) { 50 } }
 
-internal val top10Items = List(10) { index ->
-    ContentItem(id = "top-${index + 1}")
-}
+internal val top10Items = mockContent("top", 10)
 
-internal val featuredGridItems = List(4) { ContentItem(id = "feat-$it") }
+internal val recentlyAddedItems = mockContent("recent", 7)
 
-internal val liveChannelItems = List(4) { ContentItem(id = "live-$it") }
+internal val thrillerItems = mockContent("thriller", 4)
+
+internal val dramaItems = mockContent("drama", 3)
+
+// Canales en vivo mock — espelho de DUMMY_LIVE_CHANNELS de page.tsx del frontend web.
+internal val liveChannels = listOf(
+    LiveChannel(
+        id = "live-1",
+        name = "BeOn Cine",
+        currentProgram = "Maratón de Thriller",
+        category = "Películas",
+    ),
+    LiveChannel(
+        id = "live-2",
+        name = "BeOn Series",
+        currentProgram = "Temporada 3 - Ep. 7",
+        category = "Series",
+    ),
+    LiveChannel(
+        id = "live-3",
+        name = "BeOn Docs",
+        currentProgram = "Naturaleza Extrema",
+        category = "Documentales",
+    ),
+    LiveChannel(
+        id = "live-4",
+        name = "BeOn Kids",
+        currentProgram = "Aventuras Animadas",
+        category = "Infantil",
+    ),
+    LiveChannel(
+        id = "live-5",
+        name = "BeOn Deportes",
+        currentProgram = "Liga MX en Vivo",
+        category = "Deportes",
+    ),
+)

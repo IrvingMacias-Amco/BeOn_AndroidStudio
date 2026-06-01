@@ -9,6 +9,9 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
 }
 
+// Evita la carpeta app/build corrupta en disco; usar build2 hasta poder borrar la original.
+layout.buildDirectory.set(layout.projectDirectory.dir("build2"))
+
 val localProperties = Properties().apply {
     val file = rootProject.file("local.properties")
     if (file.exists()) {
@@ -31,9 +34,11 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        buildConfigField("String", "SANITY_PROJECT_ID", "\"${localProperty("SANITY_PROJECT_ID")}\"")
-        buildConfigField("String", "SANITY_DATASET", "\"${localProperty("SANITY_DATASET").ifBlank { "production" }}\"")
-        buildConfigField("String", "SANITY_API_TOKEN", "\"${localProperty("SANITY_API_TOKEN")}\"")
+        buildConfigField(
+            "String",
+            "BFF_BASE_URL",
+            "\"${localProperty("BFF_BASE_URL").ifBlank { "http://10.0.2.2:3000/api/" }}\"",
+        )
     }
 
     buildTypes {
@@ -84,6 +89,9 @@ dependencies {
     implementation(libs.okhttp)
     implementation(libs.okhttp.logging)
     implementation(libs.kotlinx.serialization.json)
+    implementation(libs.androidx.media3.exoplayer)
+    implementation(libs.androidx.media3.exoplayer.hls)
+    implementation(libs.androidx.media3.ui)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

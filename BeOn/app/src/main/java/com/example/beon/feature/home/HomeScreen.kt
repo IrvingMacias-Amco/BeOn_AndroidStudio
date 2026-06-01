@@ -17,16 +17,27 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.example.beon.data.repository.HomeCatalog
 import com.example.beon.data.repository.mockHomeCatalog
 import com.example.beon.designsystem.theme.BeOnTheme
-import com.example.beon.feature.home.components.HomeFeaturedGridSection
 import com.example.beon.feature.home.components.HomeHeroSection
 import com.example.beon.feature.home.components.HomeLandscapeCarousel
+import com.example.beon.feature.home.components.HomeLiveChannelsRow
 import com.example.beon.feature.home.components.HomeTop10Carousel
 import com.example.beon.feature.home.components.HomeTopNav
 
+/**
+ * Home screen — espejo de `src/app/page.tsx` del frontend web.
+ *
+ * Secciones en orden:
+ *   1. Top nav + Hero (con auto-rotación de slides)
+ *   2. Continuar viendo            (rail landscape, con progreso)
+ *   3. Top 10 en México            (carrusel top-10 con números)
+ *   4. Agregados Recientemente     (rail landscape)
+ *   5. Acción y Thriller           (rail landscape, sólo si hay)
+ *   6. Drama                       (rail landscape, sólo si hay)
+ *   7. Canales en Vivo             (portrait cards con badge EN VIVO)
+ */
 @Composable
 fun HomeScreen(
     catalog: HomeCatalog,
@@ -47,9 +58,7 @@ fun HomeScreen(
             modifier = Modifier.fillMaxSize(),
             state = listState,
         ) {
-            item {
-                HomeTopNav()
-            }
+            item { HomeTopNav() }
 
             item {
                 HomeHeroSection(
@@ -58,60 +67,70 @@ fun HomeScreen(
                 )
             }
 
-            item {
-                Spacer(modifier = Modifier.height(BeOnTheme.spacing.md))
-                HomeLandscapeCarousel(
-                    title = "Continuar viendo",
-                    items = catalog.continueWatching,
-                    onItemClick = onContentClick,
-                )
+            if (catalog.continueWatching.isNotEmpty()) {
+                item {
+                    Spacer(modifier = Modifier.height(BeOnTheme.spacing.md))
+                    HomeLandscapeCarousel(
+                        title = "Continuar viendo",
+                        items = catalog.continueWatching,
+                        onItemClick = onContentClick,
+                    )
+                }
             }
 
-            item {
-                Spacer(modifier = Modifier.height(BeOnTheme.spacing.md))
-                HomeFeaturedGridSection(
-                    title = "Recién Agregado",
-                    items = catalog.recentlyAdded,
-                    onItemClick = onContentClick,
-                )
+            if (catalog.top10.isNotEmpty()) {
+                item {
+                    Spacer(modifier = Modifier.height(BeOnTheme.spacing.md))
+                    HomeTop10Carousel(
+                        title = "Top 10 en México",
+                        items = catalog.top10,
+                        onItemClick = onContentClick,
+                    )
+                }
             }
 
-            item {
-                Spacer(modifier = Modifier.height(BeOnTheme.spacing.md))
-                HomeTop10Carousel(
-                    title = "Top 10 Hoy",
-                    items = catalog.top10,
-                    onItemClick = onContentClick,
-                )
+            if (catalog.recentlyAdded.isNotEmpty()) {
+                item {
+                    Spacer(modifier = Modifier.height(BeOnTheme.spacing.md))
+                    HomeLandscapeCarousel(
+                        title = "Agregados Recientemente",
+                        items = catalog.recentlyAdded,
+                        onItemClick = onContentClick,
+                    )
+                }
             }
 
-            item {
-                Spacer(modifier = Modifier.height(BeOnTheme.spacing.md))
-                HomeFeaturedGridSection(
-                    title = "Para ti",
-                    items = catalog.forYou,
-                    onItemClick = onContentClick,
-                )
+            if (catalog.actionThriller.isNotEmpty()) {
+                item {
+                    Spacer(modifier = Modifier.height(BeOnTheme.spacing.md))
+                    HomeLandscapeCarousel(
+                        title = "Acción y Thriller",
+                        items = catalog.actionThriller,
+                        onItemClick = onContentClick,
+                    )
+                }
             }
 
-            item {
-                Spacer(modifier = Modifier.height(BeOnTheme.spacing.md))
-                HomeLandscapeCarousel(
-                    title = "Canales en Vivo",
-                    items = catalog.liveChannels,
-                    onItemClick = onContentClick,
-                    cardWidth = 180.dp,
-                )
+            if (catalog.drama.isNotEmpty()) {
+                item {
+                    Spacer(modifier = Modifier.height(BeOnTheme.spacing.md))
+                    HomeLandscapeCarousel(
+                        title = "Drama",
+                        items = catalog.drama,
+                        onItemClick = onContentClick,
+                    )
+                }
             }
 
-            item {
-                Spacer(modifier = Modifier.height(BeOnTheme.spacing.md))
-                HomeFeaturedGridSection(
-                    title = "Originales Beon",
-                    items = catalog.originals,
-                    onItemClick = onContentClick,
-                )
-                Spacer(modifier = Modifier.height(BeOnTheme.spacing.xl))
+            if (catalog.liveChannels.isNotEmpty()) {
+                item {
+                    Spacer(modifier = Modifier.height(BeOnTheme.spacing.md))
+                    HomeLiveChannelsRow(
+                        title = "Canales en Vivo",
+                        channels = catalog.liveChannels,
+                    )
+                    Spacer(modifier = Modifier.height(BeOnTheme.spacing.xl))
+                }
             }
         }
 

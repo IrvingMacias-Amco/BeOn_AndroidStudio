@@ -1,28 +1,36 @@
 package com.example.beon.data.mapper
 
 import com.example.beon.data.model.Movie
-import com.example.beon.data.remote.sanity.SanityMovieDto
+import com.example.beon.data.remote.bff.BffMovieDto
 import com.example.beon.feature.contentdetail.ContentDetail
 import com.example.beon.feature.home.ContentItem
 import com.example.beon.feature.home.HeroSlide
 
 object MovieMapper {
-    fun toMovie(dto: SanityMovieDto): Movie = Movie(
-        id = dto.id,
-        title = dto.title,
-        slug = dto.slug,
-        releaseYear = dto.releaseYear,
-        durationMinutes = dto.duration,
-        shortSynopsis = dto.shortSynopsis,
-        longSynopsis = dto.longSynopsis,
-        muxPlaybackId = dto.muxPlaybackId?.trim()?.takeIf { it.isNotBlank() },
-        muxAssetId = dto.muxAssetId?.trim()?.takeIf { it.isNotBlank() },
-        posterUrl = dto.posterUrl,
-        heroUrl = dto.heroUrl ?: dto.posterUrl,
-        genres = dto.genres.orEmpty().filterNotNull().filter { it.isNotBlank() },
-        cast = dto.cast.orEmpty().filterNotNull().filter { it.isNotBlank() },
-        ratingLabel = dto.ratingLabel,
-    )
+
+    fun toMovie(dto: BffMovieDto): Movie {
+        val slug = dto.slug.current
+        val poster = dto.poster?.imageUrl()
+        val keyArt = dto.keyArt?.imageUrl()
+        val hero = dto.hero?.imageUrl()
+
+        return Movie(
+            id = slug.ifBlank { dto.id },
+            title = dto.title,
+            slug = slug,
+            releaseYear = dto.releaseYear,
+            durationMinutes = dto.duration,
+            shortSynopsis = dto.shortSynopsis,
+            longSynopsis = dto.longSynopsis,
+            muxPlaybackId = dto.muxPlaybackId?.trim()?.takeIf { it.isNotBlank() },
+            muxAssetId = dto.muxAssetId?.trim()?.takeIf { it.isNotBlank() },
+            posterUrl = poster ?: keyArt ?: hero,
+            heroUrl = hero ?: keyArt ?: poster,
+            genres = dto.genres.orEmpty().mapNotNull { it.name?.takeIf(String::isNotBlank) },
+            cast = dto.castNames.orEmpty().filter { it.isNotBlank() },
+            ratingLabel = dto.ratingLabel,
+        )
+    }
 
     fun toHeroSlide(movie: Movie): HeroSlide = HeroSlide(
         id = movie.id,
@@ -39,6 +47,7 @@ object MovieMapper {
         id = movie.id,
         title = movie.title,
         imageUrl = movie.posterUrl ?: movie.heroUrl,
+        year = movie.releaseYear?.toString(),
         progress = progress,
     )
 
@@ -66,4 +75,7 @@ object MovieMapper {
             else -> "${remaining}min"
         }
     }
+
+    private fun com.example.beon.data.remote.bff.BffImageDto.imageUrl(): String? =
+        asset?.url?.takeIf { it.isNotBlank() }
 }

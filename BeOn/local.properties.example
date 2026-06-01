@@ -3,12 +3,19 @@
 
 sdk.dir=C\:\\Users\\YOUR_USER\\AppData\\Local\\Android\\Sdk
 
-# Sanity CMS (required for live catalog)
-SANITY_PROJECT_ID=
-SANITY_DATASET=production
-SANITY_API_TOKEN=
+# BeOn BFF — endpoint REST que sirve el catálogo (películas + Mux Playback IDs)
+# Emulador Android contra Next.js en localhost: http://10.0.2.2:3000/api/
+# Producción Amplify: https://{tu-amplify-host}/api/
+BFF_BASE_URL=http://10.0.2.2:3000/api/
 
-# Mux — backend only for this phase. Do NOT add to the Android app.
-# Playback uses muxPlaybackId from Sanity.
-# MUX_TOKEN_ID=
-# MUX_TOKEN_SECRET=
+# Sanity y Mux ya NO se necesitan en el cliente Android. Se mantienen aquí solo
+# como referencia para scripts/setup-env.ps1. La app consume todo vía BFF.
+# SANITY_PROJECT_ID=
+# SANITY_DATASET=production
+# SANITY_API_TOKEN=
+
+# Mux — API tokens (backend/scripts only). Playback uses muxPlaybackId from Sanity.
+# Do NOT add MUX_* to BuildConfig — they must not ship in the APK.
+MUX_TOKEN_ID=
+MUX_TOKEN_SECRET=
+# MUX_ENV_KEY=

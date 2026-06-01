@@ -3,6 +3,8 @@ package com.example.beon.feature.contentdetail
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.beon.data.repository.MovieRepositoryProvider
+import com.example.beon.feature.home.ContentItem
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -12,6 +14,7 @@ import kotlinx.coroutines.launch
 data class ContentDetailUiState(
     val isLoading: Boolean = true,
     val content: ContentDetail? = null,
+    val relatedContent: List<ContentItem> = emptyList(),
     val errorMessage: String? = null,
 )
 
@@ -30,12 +33,19 @@ class ContentDetailViewModel(
     fun loadContent() {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, errorMessage = null) }
-            runCatching { repository.getMovieDetail(contentId) }
+            val detailDeferred = async { repository.getMovieDetail(contentId) }
+            val relatedDeferred = async {
+                repository.getRecommendations(excludeContentId = contentId, limit = 12)
+            }
+
+            runCatching { detailDeferred.await() }
                 .onSuccess { detail ->
+                    val related = relatedDeferred.await()
                     _uiState.update {
                         it.copy(
                             isLoading = false,
                             content = detail,
+                            relatedContent = related,
                             errorMessage = null,
                         )
                     }
@@ -45,6 +55,7 @@ class ContentDetailViewModel(
                         it.copy(
                             isLoading = false,
                             content = null,
+                            relatedContent = emptyList(),
                             errorMessage = error.message,
                         )
                     }
